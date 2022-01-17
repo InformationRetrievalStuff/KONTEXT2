@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane fx:id="mainWindowRoot" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.samjakob.kontext2.ui.MainWindowController">
+<BorderPane fx:id="mainWindowRoot" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.samjakob.kontext2.ui.MainWindowController">
     <top>
         <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
             <children>
@@ -36,7 +29,7 @@
         </HBox>
     </top>
     <center>
-        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER">
+        <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" BorderPane.alignment="CENTER">
             <tabs>
                 <Tab fx:id="tabInput" closable="false" text="Input">
                     <content>
@@ -73,12 +66,39 @@
                 </Tab>
                 <Tab fx:id="tabTasks" closable="false" text="Tasks">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="taskStart" layoutX="501.0" layoutY="177.0" mnemonicParsing="false" onAction="#onStartTask" text="Start Task" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                         <ChoiceBox fx:id="taskName" layoutX="56.0" layoutY="14.0" prefWidth="150.0" value="Index">
+                             <items>
+                                 <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Index" />
+                                 </FXCollections>
+                             </items>
+                         </ChoiceBox>
+                        <Label layoutX="14.0" layoutY="19.0" text="Task:" />
+                        <Label layoutX="14.0" layoutY="57.0" text="Language:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="57.0" />
+                         <ChoiceBox disable="true" layoutX="93.0" layoutY="52.0" prefHeight="26.0" prefWidth="265.0" value="British National Corpus (Full)" AnchorPane.leftAnchor="93.0" AnchorPane.topAnchor="52.0">
+                             <items>
+                                 <FXCollections fx:factory="observableArrayList">
+                                     <String fx:value="British National Corpus (Full)" />
+                                 </FXCollections>
+                             </items>
+                         </ChoiceBox>
+                     </children></AnchorPane>
                     </content>
                 </Tab>
                 <Tab text="Results">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="resultsTable" layoutX="6.0" prefHeight="221.0" prefWidth="594.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<!--                          <columns>-->
+<!--                            <TableColumn prefWidth="75.0" text="Word" />-->
+<!--                            <TableColumn prefWidth="142.0" sortType="DESCENDING" text="Absolute Freq." />-->
+<!--                          </columns>-->
+                        </TableView>
+                     </children></AnchorPane>
                     </content>
                 </Tab>
             </tabs>
