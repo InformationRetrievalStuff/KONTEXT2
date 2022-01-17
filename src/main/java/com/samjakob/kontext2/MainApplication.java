@@ -15,6 +15,7 @@ public class MainApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("ui/MainWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        scene.getStylesheets().add(MainApplication.class.getResource("styles/dark.css").toString());
 
         stage.setTitle("KONTEXT 2 | University of Surrey");
         stage.setScene(scene);
