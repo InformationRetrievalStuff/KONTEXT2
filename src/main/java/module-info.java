@@ -10,4 +10,6 @@ module com.samjakob.kontext2 {
     exports com.samjakob.kontext2.ui;
     exports com.samjakob.kontext2.results;
     opens com.samjakob.kontext2.ui to javafx.fxml;
+    exports com.samjakob.kontext2.ui.controller;
+    opens com.samjakob.kontext2.ui.controller to javafx.fxml;
 }

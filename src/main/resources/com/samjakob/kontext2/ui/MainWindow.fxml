@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="mainWindowRoot" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.samjakob.kontext2.ui.MainWindowController">
+<BorderPane fx:id="mainWindowRoot" minHeight="400.0" minWidth="400.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.samjakob.kontext2.ui.controller.MainWindowController">
     <top>
         <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0">
             <children>
@@ -85,19 +85,6 @@
                                  </FXCollections>
                              </items>
                          </ChoiceBox>
-                     </children></AnchorPane>
-                    </content>
-                </Tab>
-                <Tab text="Results">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView fx:id="resultsTable" layoutX="6.0" prefHeight="221.0" prefWidth="594.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-<!--                          <columns>-->
-<!--                            <TableColumn prefWidth="75.0" text="Word" />-->
-<!--                            <TableColumn prefWidth="142.0" sortType="DESCENDING" text="Absolute Freq." />-->
-<!--                          </columns>-->
-                        </TableView>
                      </children></AnchorPane>
                     </content>
                 </Tab>

@@ -1,23 +1,20 @@
-package com.samjakob.kontext2.ui;
+package com.samjakob.kontext2.ui.controller;
 
 import com.samjakob.kontext2.nlp.Indexer;
 import com.samjakob.kontext2.nlp.Sanitizer;
 import com.samjakob.kontext2.results.IndexResult;
+import com.samjakob.kontext2.ui.PartialRenderer;
 import com.samjakob.kontext2.utils.FileSystem;
 import com.samjakob.kontext2.utils.Interface;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.util.Callback;
 
 import java.io.File;
-import java.text.DecimalFormat;
+import java.io.IOException;
 import java.util.*;
 
 public class MainWindowController {
@@ -61,14 +58,16 @@ public class MainWindowController {
     @FXML
     public TabPane tabPane;
 
-    @FXML
-    public TableView<IndexResult> resultsTable;
-
     /**
      * This gets populated with the initial label of the 'Input' tab as the app
      * loads. This allows it to be dynamically updated.
      */
     private String inputTabLabel;
+
+    /**
+     * Renders interface partials, such as the results table.
+     */
+    private PartialRenderer partialRenderer;
 
     @FXML
     public void initialize() {
@@ -82,26 +81,7 @@ public class MainWindowController {
         ButtonBar.setButtonData(inputAddFileButton, ButtonBar.ButtonData.RIGHT);
         ButtonBar.setButtonData(inputAddDirectoryButton, ButtonBar.ButtonData.RIGHT);
 
-        // Add the columns to the resultsTable.
-        TableColumn<IndexResult, String> wordColumn = new TableColumn<>("Word");
-        wordColumn.setCellValueFactory(new PropertyValueFactory<>("word"));
-        resultsTable.getColumns().add(wordColumn);
-
-        TableColumn<IndexResult, Integer> absFreqColumn = new TableColumn<>("Absolute Freq.");
-        absFreqColumn.setCellValueFactory(new PropertyValueFactory<>("absoluteFrequency"));
-        absFreqColumn.setSortType(TableColumn.SortType.DESCENDING);
-        resultsTable.getColumns().add(absFreqColumn);
-
-        TableColumn<IndexResult, String> relFreqColumn = new TableColumn<>("Relative Freq.");
-        relFreqColumn.setCellValueFactory(new PropertyValueFactory<>("relativeFrequency"));
-        resultsTable.getColumns().add(relFreqColumn);
-
-        TableColumn<IndexResult, Double> fileCountColumn = new TableColumn<>("File Count");
-        fileCountColumn.setCellValueFactory(new PropertyValueFactory<>("fileCount"));
-        resultsTable.getColumns().add(fileCountColumn);
-
-        resultsTable.getSortOrder().clear();
-        resultsTable.getSortOrder().add(absFreqColumn);
+        partialRenderer = new PartialRenderer(tabPane);
     }
 
     @FXML
@@ -263,40 +243,16 @@ public class MainWindowController {
 
         switch (taskName.getValue()) {
             case "Index" -> {
-//                Map<String, Integer> wordList = new HashMap<>();
-
-//                inputFileList.getItems().forEach(filePath -> {
-//                    String contents = FileSystem.readFile(filePath);
-//                    assert contents != null;
-//
-//                    List<String> words = Sanitizer.tokenize(contents);
-//
-//                    for (String word : words) {
-//                        if (!wordList.containsKey(word)) {
-//                            wordList.put(word, 1);
-//                        } else wordList.put(word, wordList.get(word) + 1);
-//                    }
-//                });
-//
-//                List<IndexResult> results = wordList.entrySet().stream().map(
-//                    (entry) -> new IndexResult(
-//                        entry.getKey(),
-//                        entry.getValue(),
-//                        (double) entry.getValue() / wordList.size()
-//                    )
-//                ).toList();
-
                 List<IndexResult> results = Indexer.index(inputFileList.getItems().stream().map(
                     filePath -> Sanitizer.tokenize(Objects.requireNonNull(FileSystem.readFile(filePath)))
                 ).toList());
 
-                // Empty the results table.
-                resultsTable.getItems().clear();
-
-                // Add the new results to the results table.
-                resultsTable.getItems().addAll(results);
-                resultsTable.sort();
-                tabPane.getSelectionModel().selectLast();
+                try {
+                    partialRenderer.displayResultsTable(IndexResult.getTableColumns(), results);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    return;
+                }
             }
         }
 

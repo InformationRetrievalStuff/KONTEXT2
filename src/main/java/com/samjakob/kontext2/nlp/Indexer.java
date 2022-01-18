@@ -30,8 +30,6 @@ public class Indexer {
             currentFile.incrementAndGet();
         });
 
-        System.out.println(totalWordCount.get());
-
         return wordList.entrySet().stream().map(entry -> new IndexResult(
             entry.getKey(),
             entry.getValue().absoluteFrequency,
