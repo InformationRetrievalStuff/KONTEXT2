@@ -3,7 +3,6 @@ module com.samjakob.kontext2 {
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
-    requires validatorfx;
 
     opens com.samjakob.kontext2 to javafx.fxml;
     exports com.samjakob.kontext2;
