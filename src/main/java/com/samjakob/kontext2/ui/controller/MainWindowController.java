@@ -172,6 +172,7 @@ public class MainWindowController {
         }
 
         refreshTabLabels();
+        sortFileOrder();
     }
 
     @FXML
@@ -235,25 +236,30 @@ public class MainWindowController {
 
         // Ensure tab labels are refreshed regardless of what happened.
         refreshTabLabels();
+        sortFileOrder();
     }
 
     @FXML
     public void onStartTask() {
         taskStart.setDisable(true);
 
-        switch (taskName.getValue()) {
-            case "Index" -> {
-                List<IndexResult> results = Indexer.index(inputFileList.getItems().stream().map(
-                    filePath -> Sanitizer.tokenize(Objects.requireNonNull(FileSystem.readFile(filePath)))
-                ).toList());
+        if (inputFileList.getItems().size() > 0) {
+            switch (taskName.getValue()) {
+                case "Index" -> {
+                    List<IndexResult> results = Indexer.index(inputFileList.getItems().stream().map(
+                            filePath -> Sanitizer.tokenize(Objects.requireNonNull(FileSystem.readFile(filePath)))
+                    ).toList());
 
-                try {
-                    partialRenderer.displayResultsTable(IndexResult.getTableColumns(), results);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    return;
+                    try {
+                        partialRenderer.displayResultsTable(IndexResult.getTableColumns(), results);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        return;
+                    }
                 }
             }
+        } else {
+            Interface.showAlertDialog(Alert.AlertType.ERROR, "No Files Specified...", "You have not specified any files.", "The requested task could not be performed because you have not yet specified any files to perform the task on.");
         }
 
         taskStart.setDisable(false);
@@ -289,6 +295,13 @@ public class MainWindowController {
         tabInput.setText(
             inputTabLabel + " (" +  Interface.withEnglishNumericalSuffix("file", inputFileCount) + ")"
         );
+    }
+
+    /**
+     * Perform an alphabetical sort on the files.
+     */
+    private void sortFileOrder() {
+        inputFileList.getItems().sort(String::compareTo);
     }
 
 }

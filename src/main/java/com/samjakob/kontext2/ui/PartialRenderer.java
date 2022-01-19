@@ -43,6 +43,7 @@ public class PartialRenderer {
             );
             idColumn.setSortable(false);
             idColumn.setReorderable(false);
+            idColumn.setPrefWidth(50);
             resultsTable.getColumns().add(idColumn);
 
             resultsTableController.initIdColumn(idColumn);
